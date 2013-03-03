@@ -43,8 +43,7 @@ namespace DataStructures {
 			 * nullptr is treated as one after the last element
 			 * @param position the initial position
 			 */
-			Iterator (Node *position) : current (position) {
-				Node *last = head;
+			Iterator (Node *position, Node *head) : current (position), last (head) {
 				while ( (last != nullptr) && (last->next != nullptr)) {
 					last = last->next;
 				}
@@ -149,16 +148,37 @@ namespace DataStructures {
 			Iterator &operator-= (int offset) {
 				return *this += -offset;
 			}
+
+			Iterator operator+ (const int offset) const {
+				Iterator ret = *this;
+				ret += offset;
+				return ret;
+			}
+
+			Iterator operator- (int offset) const {
+				Iterator ret = *this;
+				ret -= offset;
+				return ret;
+			}
+
+			friend class List;
 		};
 	private:
 		Node *head;
 	public:
+		/**
+		 * @brief creates an empty list
+		 */
 		List() : head (nullptr) {}
 
 		List (const T &data) : List() {
 			head = nodeCreate (data);
 		}
 
+		/**
+		 * @brief copy c-tor
+		 * @param src the original list
+		 */
 		List (const List &src) : List() {
 			Node *current = nullptr;
 			for (Iterator i = src.begin(); i != src.end(); ++i) {
@@ -178,40 +198,30 @@ namespace DataStructures {
 		}
 
 		Iterator begin() const {
-			return Iterator (head);
+			return Iterator (head, head);
 		}
 
 		Iterator end() const {
-			return Iterator (nullptr);
+			return Iterator (nullptr, head);
 		}
 
-		/** TODO: make this safer
+		/**
 		 * @brief inserts a new item before the given iterator
 		 * @param before an iterator before which the item will be inserted
+		 * @param data the data that shall be added
 		 * @return *this
 		 */
-		List &insert (const Iterator &before, const T &data) {
-			Node *newNode = nodeCreate (data);
+		List &insert (Iterator &before, const T &data) {
+			// TODO
 			return *this;
 		}
 	};
-
-	template<class T>
-	typename List<T>::Iterator operator+ (const typename List<T>::Iterator &iter, const int offset) {
-		typename List<T>::Iterator ret = iter;
-		ret += offset;
-		return ret;
-	}
-
-	template<class T>
-	typename List<T>::Iterator operator+ (const int offset, const typename List<T>::Iterator &iter) {
-		return iter + offset;
-	}
-
-	template<class T>
-	typename List<T>::Iterator operator- (const typename List<T>::Iterator &iter, const int offset) {
-		return iter + (-offset);
-	}
 }
 
 #endif
+
+
+
+
+
+
