@@ -17,6 +17,19 @@ namespace DataStructures {
 			ret->value = value;
 			return ret;
 		}
+
+		void nodeDestroy (Node *head) {
+			if (head == nullptr) {
+				return;
+			}
+
+			while (head != nullptr) {
+				Node *tmp = head;
+				head = head->next;
+				delete tmp;
+				tmp = nullptr;
+			}
+		}
 	public:
 		class Iterator {
 			Node *current;
@@ -28,9 +41,17 @@ namespace DataStructures {
 				return *this;
 			}
 
+			Iterator &operator++ (int) {
+				return operator++();
+			}
+
 			Iterator &operator--() {
 				current = current->prev;
 				return *this;
+			}
+
+			Iterator &operator-- (int) {
+				return operator--();
 			}
 
 			T &operator*() {
@@ -38,7 +59,7 @@ namespace DataStructures {
 			}
 
 			const T &operator*() const {
-				return *this;
+				return current->value;
 			}
 
 			bool operator== (const Iterator &other) const {
@@ -52,19 +73,15 @@ namespace DataStructures {
 	private:
 		Node *head;
 	public:
-
-		List() {}
+		List() : head (nullptr) {}
 
 		List (const T &data) : List() {
-			head = new Node;
-			head->prev = nullptr;
-			head->next = nullptr;
-			head->value = data;
+			head = nodeCreate (data);
 		}
 
 		List (const List &src) : List() {
 			Node *current = nullptr;
-for (auto & i: src) {
+			for (Iterator i = src.begin(); i != src.end(); ++i) {
 				if (head == nullptr) {
 					head = nodeCreate (*i);
 					current = head;
@@ -77,25 +94,15 @@ for (auto & i: src) {
 		}
 
 		virtual ~List() {
-			// TODO (in the meantime we shall be leaking)
-		}
-
-		Iterator begin() {
-			return Iterator (head);
+			nodeDestroy (head);
 		}
 
 		Iterator begin() const {
-			return begin();
-		}
-
-		Iterator end() {
-			// TODO: is that a good idea?
-			// (prevents the ability to reverse-iteration)
-			return Iterator (nullptr);
+			return Iterator (head);
 		}
 
 		Iterator end() const {
-			return end();
+			return Iterator (nullptr);
 		}
 	};
 }

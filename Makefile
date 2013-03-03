@@ -2,14 +2,14 @@ CC=g++
 DEBUG=-g
 CXXFLAGS=-std=c++11 -Werror -Wall -pedantic-errors $(DEBUG)
 
-test: main.o
+list_test: list_test.o
 	$(CC) $(CXXFLAGS) $^ -o $@
 
-main.o: main.cpp list.h
+list_test.o: list_test.cpp list.h
 	$(CC) $(CXXFLAGS) -c $^
 
 clean: clean_o clean_gch
-	rm -f test
+	rm -f list_test
 clean_o:
 	rm -f *.o
 clean_gch:
