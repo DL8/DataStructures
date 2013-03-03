@@ -4,7 +4,6 @@ using std::cout;
 using std::endl;
 using namespace DataStructures;
 
-
 int main() {
 	List<int> n;
 	auto ii = n.begin();
@@ -25,18 +24,16 @@ for (auto & j: n2) {
 	cout << endl;
 
 	n2 = n;
-	n2.insert(n2.end()-2, 6);
+	n2.insert (n2.end() - 2, 6);
 for (auto & j: n2) {
 		cout << j << " ";
 	}
 	cout << endl;
-	
-	for (auto & j: n) {
+
+for (auto & j: n) {
 		cout << j << " ";
 	}
 	cout << endl;
 
 	return 0;
 }
-
-
