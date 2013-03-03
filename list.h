@@ -13,40 +13,72 @@ namespace DataStructures {
 			Node *prev;
 			Node *next;
 		};
-		Node *nodeCreate (const T &value) {
+
+		/**
+		 * @brief creates a new single node without initializing value
+		 * @param value value for the node
+		 * @return a pointer to the new node
+		 */
+		Node *nodeCreate () const {
 			Node *ret = new Node;
 			ret->prev = nullptr;
 			ret->next = nullptr;
+			return ret;
+		}
+		/**
+		 * @brief creates a new single node with the given value
+		 * @param value value for the node
+		 * @return a pointer to the new node
+		 */
+		Node *nodeCreate (const T &value) const {
+			Node *ret = nodeCreate();
 			ret->value = value;
 			return ret;
 		}
 
-		void nodeDestroy (Node *head) {
+		void nodeDestroy (Node *&head) const {
 			if (head == nullptr) {
 				return;
 			}
 
-			while (head != nullptr) {
-				Node *tmp = head;
-				head = head->next;
+			Node *current = head;
+
+			while (current != nullptr) {
+				Node *tmp = current;
+				current = current->next;
 				delete tmp;
 				tmp = nullptr;
 			}
+			head = nullptr;
 		}
 	public:
 		class Iterator {
 			Node *current;
-			Node *last;
+
+			Iterator() : current (nullptr) {}
 		public:
 			/**
-			 * @brief creates a new iterator with the given position
-			 * nullptr is treated as one after the last element
-			 * @param position the initial position
+			 * @brief creates a new iterator that points at the given position
+			 * @param pos position to point at
 			 */
-			Iterator (Node *position, Node *head) : current (position), last (head) {
-				while ( (last != nullptr) && (last->next != nullptr)) {
-					last = last->next;
-				}
+			Iterator (Node *pos) : Iterator() {
+				current = pos;
+			}
+
+			/**
+			 * @brief dereference
+			 * @return reference to the value at the current position
+			 */
+			T &operator*() {
+				return current->value;
+			}
+
+			/**
+			 * @brief dereference
+			 * @return const reference to the value at the current position
+			 */
+			const T &operator*() const {
+				return * (*this);
 			}
 
 			/**
@@ -63,7 +95,7 @@ namespace DataStructures {
 			 * @return *this
 			 */
 			Iterator &operator++ (int) {
-				return operator++();
+				return (*this) ++;
 			}
 
 			/**
@@ -71,11 +103,7 @@ namespace DataStructures {
 			 * @return *this
 			 */
 			Iterator &operator--() {
-				if (current == nullptr) {
-					current = last;
-				} else {
-					current = current->prev;
-				}
+				current = current->prev;
 				return *this;
 			}
 
@@ -84,55 +112,35 @@ namespace DataStructures {
 			 * @return *this
 			 */
 			Iterator &operator-- (int) {
-				return operator--();
+				return (*this) ++;
 			}
 
 			/**
-			 * @brief iterator dereference
-			 * @return a reference to the value at the iterator's position
-			 */
-			T &operator*() {
-				return current->value;
-			}
-
-			/**
-			 * @brief iterator const dereference
-			 * @return a const reference to the value at the iterator's position
-			 */
-			const T &operator*() const {
-				return current->value;
-			}
-
-			/**
-			 * @brief iterator comparison
-			 * @param other the iterator to compare with
-			 * @return true if both iterators point to the same element of the same list
+			 * @brief compares two iterators
+			 * @param other iterator to compare with
+			 * @return true if iterators point at the same element
 			 */
 			bool operator== (const Iterator &other) const {
 				return this->current == other.current;
 			}
 
 			/**
-			 * @brief iterator comparison
-			 * @param other the iterator to compare with
-			 * @return false if both iterators point to the same element of the same list
+			 * @brief compares two iterators
+			 * @param other iterator to compare with
+			 * @return false if iterators point at the same element
 			 */
 			bool operator!= (const Iterator &other) const {
 				return ! (*this == other);
 			}
 
 			/**
-			 * @brief iterator +=
-			 * @param offset offset to shift the current iterator
+			 * @brief adds offset to the iterator
+			 * @param offset
 			 * @return *this
 			 */
 			Iterator &operator+= (int offset) {
-				bool add = (offset > 0);
+				bool add = (offset >= 0);
 				offset = abs (offset);
-				if ( (offset > 0) && (current == nullptr)) {
-					current = last;
-					offset--;
-				}
 				while (offset > 0) {
 					current = add ? (current->next) : (current->prev);
 					offset--;
@@ -141,38 +149,79 @@ namespace DataStructures {
 			}
 
 			/**
-			 * @brief iterator -=
-			 * @param offset offset to shift the current iterator
+			 * @brief substracts offset from the iterator
+			 * @param offset
 			 * @return *this
 			 */
-			Iterator &operator-= (int offset) {
-				return *this += -offset;
+			Iterator &operator-= (const int offset) {
+				*this += (-offset);
+				return *this;
 			}
 
+			/**
+			 * @brief adds offset to an iterator
+			 * @param offset
+			 * @return the new iterator
+			 */
 			Iterator operator+ (const int offset) const {
 				Iterator ret = *this;
 				ret += offset;
 				return ret;
 			}
 
-			Iterator operator- (int offset) const {
-				Iterator ret = *this;
-				ret -= offset;
-				return ret;
+			/**
+			 * @brief substracts offset from an iterator
+			 * @param offset
+			 * @return the new iterator
+			 */
+			Iterator operator- (const int offset) const {
+				return *this + (-offset);
 			}
 
 			friend class List;
 		};
 	private:
 		Node *head;
+		Node *tail;
+
+		/**
+		 * @brief appends the given linked chain to the list
+		 * @param src the head of the list
+		 * @param hasDummy omits the last item of the list if true (treated as a dummy last element)
+		 * @return *this
+		 */
+		List &append (Node *src, bool hasDummy = true) {
+			Iterator addPos = end();
+			while ( (src != nullptr) && (!hasDummy || (src->next != nullptr))) {
+				insert (addPos, src->value);
+				src = src->next;
+			}
+			return *this;
+		}
+
+		/**
+		 * @brief deletes the list content
+		 */
+		void deallocate() {
+			while ( (head != nullptr) && (head != tail)) {
+				Node *tmp = head;
+				head = head->next;
+				delete tmp;
+				tmp = nullptr;
+			}
+			tail->prev = nullptr;
+			head = tail;
+		}
 	public:
 		/**
 		 * @brief creates an empty list
 		 */
-		List() : head (nullptr) {}
+		List() : head (nullptr), tail (nodeCreate()) {
+			head = tail;
+		}
 
 		List (const T &data) : List() {
-			head = nodeCreate (data);
+			insert (begin(), data);
 		}
 
 		/**
@@ -180,29 +229,20 @@ namespace DataStructures {
 		 * @param src the original list
 		 */
 		List (const List &src) : List() {
-			Node *current = nullptr;
-			for (Iterator i = src.begin(); i != src.end(); ++i) {
-				if (head == nullptr) {
-					head = nodeCreate (*i);
-					current = head;
-				} else {
-					current->next = nodeCreate (*i);
-					current->next->prev = current;
-					current = current->next;
-				}
-			}
+			append (src.head);
 		}
 
 		virtual ~List() {
-			nodeDestroy (head);
+			deallocate();
+			nodeDestroy (tail);
 		}
 
 		Iterator begin() const {
-			return Iterator (head, head);
+			return Iterator (head);
 		}
 
 		Iterator end() const {
-			return Iterator (nullptr, head);
+			return Iterator (tail);
 		}
 
 		/**
@@ -211,8 +251,33 @@ namespace DataStructures {
 		 * @param data the data that shall be added
 		 * @return *this
 		 */
-		List &insert (Iterator &before, const T &data) {
-			// TODO
+		List &insert (const Iterator &before, const T &value) {
+			Node *newNode = nodeCreate (value);
+			Node *newPrev = before.current->prev;
+			Node *newNext = before.current;
+			newNode->next = newNext;
+			newNode->prev = newPrev;
+			newNext->prev = newNode;
+			if (newPrev == nullptr) {
+				head = newNode;
+			} else {
+				newPrev->next = newNode;
+			}
+
+			return *this;
+		}
+
+		/**
+		 * @brief assignment operator
+		 * @param other list to assign from
+		 * @return *this
+		 */
+		List &operator= (const List &other) {
+			if (this == &other) {
+				return *this;
+			}
+			deallocate();
+			append (other.head);
 			return *this;
 		}
 	};
