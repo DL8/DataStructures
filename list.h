@@ -36,6 +36,10 @@ namespace DataStructures {
 			return ret;
 		}
 
+		/**
+		 * @brief forward-destroys the given linked list
+		 * @param head the head of the list
+		 */
 		void nodeDestroy (Node *&head) const {
 			if (head == nullptr) {
 				return;
@@ -220,6 +224,10 @@ namespace DataStructures {
 			head = tail;
 		}
 
+		/**
+		 * @brief creates a new list with a single element
+		 * @param data the element to create the list with
+		 */
 		List (const T &data) : List() {
 			insert (begin(), data);
 		}
@@ -232,15 +240,26 @@ namespace DataStructures {
 			append (src.head);
 		}
 
+		/**
+		 * @brief d-tor
+		 */
 		virtual ~List() {
 			deallocate();
 			nodeDestroy (tail);
 		}
 
+		/**
+		 * @brief returns an iterator to the beginning of the list
+		 * @return an iterator to the beginning of the list
+		 */
 		Iterator begin() const {
 			return Iterator (head);
 		}
 
+		/**
+		 * @brief returns an iterator to after the last element
+		 * @return an iterator to after the last element
+		 */
 		Iterator end() const {
 			return Iterator (tail);
 		}
@@ -284,9 +303,3 @@ namespace DataStructures {
 }
 
 #endif
-
-
-
-
-
-
