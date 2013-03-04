@@ -59,14 +59,12 @@ namespace DataStructures {
 	public:
 		class Iterator {
 			Node *current;
-
-			Iterator() : current (nullptr) {}
 		public:
 			/**
 			 * @brief creates a new iterator that points at the given position
 			 * @param pos position to point at
 			 */
-			Iterator (Node *pos) : Iterator() {
+			Iterator (Node *pos) : current (pos) {
 				current = pos;
 			}
 
@@ -87,7 +85,7 @@ namespace DataStructures {
 			}
 
 			/**
-			 * @brief suffix increment
+			 * @brief prefix increment
 			 * @return *this
 			 */
 			Iterator &operator++() {
@@ -96,15 +94,15 @@ namespace DataStructures {
 			}
 
 			/**
-			 * @brief prefix increment
+			 * @brief suffix increment
 			 * @return *this
 			 */
 			Iterator &operator++ (int) {
-				return (*this) ++;
+				return ++ (*this);
 			}
 
 			/**
-			 * @brief suffix decrement
+			 * @brief prefix decrement
 			 * @return *this
 			 */
 			Iterator &operator--() {
@@ -113,11 +111,11 @@ namespace DataStructures {
 			}
 
 			/**
-			 * @brief prefix decrement
+			 * @brief suffix decrement
 			 * @return *this
 			 */
 			Iterator &operator-- (int) {
-				return (*this) ++;
+				return -- (*this);
 			}
 
 			/**
@@ -320,6 +318,28 @@ namespace DataStructures {
 			erased->prev = nullptr;
 			nodeDestroy (erased);
 			return *this;
+		}
+
+		/**
+		 * @brief returns the size of the list
+		 * @return the size of the list
+		 */
+		int size() const {
+			int ret = 0;
+			auto i = begin();
+			while (i != end()) {
+				ret++;
+				i++;
+			}
+			return ret;
+		}
+
+		/**
+		 * @brief checks if the list is empty
+		 * @return true if the list is empty
+		 */
+		bool empty() const {
+			return begin() == end();
 		}
 
 		/**
