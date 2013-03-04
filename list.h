@@ -287,6 +287,39 @@ namespace DataStructures {
 		}
 
 		/**
+		 * @brief appends a new item to the end of the list
+		 * @param data the data that shall be appended
+		 * @return *this
+		 */
+		List &append (const T &data) {
+			return insert (end(), data);
+		}
+
+		/**
+		 * @brief removes the element at the iterator's position
+		 * removing invalidates the given iterator and every iterator that points to the same location
+		 * an invalid iterator (e.g out of range) will cause an undefined behavior
+		 * @param position the element that will be removed
+		 * @return *this
+		 */
+		List &erase (const Iterator &position) {
+			Node *next = position.current->next;
+			Node *prev = position.current->prev;
+			Node *erased = position.current;
+
+			if (prev != nullptr) {
+				prev->next = next;
+			} else {
+				head = next;
+			}
+			next->prev = prev;
+			erased->next = nullptr;
+			erased->prev = nullptr;
+			nodeDestroy (erased);
+			return *this;
+		}
+
+		/**
 		 * @brief assignment operator
 		 * @param other list to assign from
 		 * @return *this
