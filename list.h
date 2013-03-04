@@ -2,6 +2,7 @@
 #define _LIST_H_
 
 #include <cstdlib>
+#include <type_traits>
 using std::abs;
 
 namespace DataStructures {
@@ -221,6 +222,8 @@ namespace DataStructures {
 		 * @brief creates an empty list
 		 */
 		List() : head (nullptr), tail (nodeCreate()) {
+			static_assert (std::is_copy_assignable<T>::value, "T must be copy-assignable (i.e T a = b)");
+			static_assert (std::is_default_constructible<T>::value, "T must have an accessible default constructor");
 			head = tail;
 		}
 
