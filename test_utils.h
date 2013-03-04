@@ -9,4 +9,10 @@
 #define LINE_NUMBER() \
 	std::cout << "line #" << __LINE__ << std::endl;
 
+#define TEST_TITLE(title) \
+	do { \
+		LINE_NUMBER(); \
+		std::cout << "testing: " << title << std::endl; \
+	} while(false);
+
 #endif
