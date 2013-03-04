@@ -357,7 +357,40 @@ namespace DataStructures {
 			append (other.head);
 			return *this;
 		}
+
+		/**
+		 * @brief compares with another list
+		 * T must support != comparison for this
+		 * @param other the list to compare with
+		 * @return true if both lists contain the same elements at the same order
+		 */
+		bool operator== (const List &other) const {
+			auto i1 = begin();
+			auto i2 = other.begin();
+			while ( (i1 != end()) && (i2 != end())) {
+				if (*i1 != *i2) {
+					return false;
+				}
+				i1++;
+				i2++;
+			}
+			if ( (i1 != end()) || (i2 != other.end())) {
+				return false;
+			}
+			return true;
+		}
+
+		/**
+		 * @brief compares with another list
+		 * T must support != comparison for this
+		 * @param other the list to compare with
+		 * @return false if both lists contain the same elements at the same order
+		 */
+		bool operator!= (const List &other) const {
+			return ! (*this == other);
+		}
 	};
+
 }
 
 #endif
