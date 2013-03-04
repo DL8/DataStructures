@@ -201,20 +201,6 @@ namespace DataStructures {
 			}
 			return *this;
 		}
-
-		/**
-		 * @brief deletes the list content
-		 */
-		void deallocate() {
-			while ( (head != nullptr) && (head != tail)) {
-				Node *tmp = head;
-				head = head->next;
-				delete tmp;
-				tmp = nullptr;
-			}
-			tail->prev = nullptr;
-			head = tail;
-		}
 	public:
 		/**
 		 * @brief creates an empty list
@@ -245,7 +231,7 @@ namespace DataStructures {
 		 * @brief d-tor
 		 */
 		virtual ~List() {
-			deallocate();
+			clear();
 			nodeDestroy (tail);
 		}
 
@@ -343,6 +329,22 @@ namespace DataStructures {
 		}
 
 		/**
+		 * @brief clears the entire list content
+		 * @return *this
+		 */
+		List &clear() {
+			while ( (head != nullptr) && (head != tail)) {
+				Node *tmp = head;
+				head = head->next;
+				delete tmp;
+				tmp = nullptr;
+			}
+			tail->prev = nullptr;
+			head = tail;
+			return *this;
+		}
+
+		/**
 		 * @brief assignment operator
 		 * @param other list to assign from
 		 * @return *this
@@ -351,7 +353,7 @@ namespace DataStructures {
 			if (this == &other) {
 				return *this;
 			}
-			deallocate();
+			clear();
 			append (other.head);
 			return *this;
 		}
