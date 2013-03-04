@@ -86,5 +86,10 @@ for (auto & j: n) {
 	cout << *++ii << endl;
 	cout << *ii-- << endl;
 
+	TEST_TITLE ("clear");
+	cout << n.empty() << endl;
+	n.clear();
+	cout << n.empty() << endl;
+
 	return 0;
 }
