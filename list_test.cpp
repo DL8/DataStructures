@@ -71,5 +71,20 @@ for (auto & j: n) {
 
 	TEST_TITLE ("static assertion");
 	List<StaticAssertTest> n3;
+
+	TEST_TITLE ("empty list assignment");
+	n = List<int>();
+
+	TEST_TITLE ("empty() and size()");
+	cout << n.size() << " " << n.empty() << endl;
+	n.insert (n.end(), 2);
+	n.insert (n.end(), 4);
+	cout << n.size() << " " << n.empty() << endl;
+
+	TEST_TITLE ("increment/decrement");
+	ii = n.begin();
+	cout << *++ii << endl;
+	cout << *ii-- << endl;
+
 	return 0;
 }
