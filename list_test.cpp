@@ -9,9 +9,9 @@ using namespace DataStructures;
 /**
  * @brief used for static assertion tests
  */
-class Foo {
+class StaticAssertTest {
 public:
-	//explicit Foo() = delete;
+	//explicit StaticAssertTest() = delete;
 };
 
 int main() {
@@ -70,6 +70,6 @@ for (auto & j: n) {
 	cout << endl;
 
 	TEST_TITLE ("static assertion");
-	List<Foo> n3;
+	List<StaticAssertTest> n3;
 	return 0;
 }
