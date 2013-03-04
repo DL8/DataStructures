@@ -6,6 +6,14 @@ using std::ostream;
 using std::endl;
 using namespace DataStructures;
 
+/**
+ * @brief used for static assertion tests
+ */
+class Foo {
+public:
+	//explicit Foo() = delete;
+};
+
 int main() {
 	LINE_NUMBER();
 	List<int> n;
@@ -61,5 +69,7 @@ for (auto & j: n) {
 	}
 	cout << endl;
 
+	TEST_TITLE ("static assertion");
+	List<Foo> n3;
 	return 0;
 }
