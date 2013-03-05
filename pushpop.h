@@ -9,7 +9,7 @@ namespace DataStructures {
 	 * @brief an interface for a data structure with the ability to push and pop an item (e.g queue or stack)
 	 * contains methods to push(), pop() and dereference (const and non-const)
 	 */
-	template<class T> class PushPop {
+	template<class T, class Overriden> class PushPop {
 		/**
 		 * @brief actually adds an element into the data type (called from push())
 		 * @param data the content to push
@@ -18,7 +18,7 @@ namespace DataStructures {
 	public:
 		PushPop() {
 			static_assert (std::is_copy_constructible<T>::value, "T must have an accessible copy c-tor");
-			
+
 		}
 		virtual ~PushPop() {}
 
@@ -27,9 +27,9 @@ namespace DataStructures {
 		 * @param data the content to push
 		 * @return *this
 		 */
-		virtual PushPop &push (const T &data) {
+		virtual Overriden &push (const T &data) {
 			pushElement (data);
-			return *this;
+			return static_cast<Overriden &> (*this);
 		}
 
 		/**
