@@ -8,6 +8,8 @@ namespace DataStructures {
 	/**
 	 * @brief an interface for a data structure with the ability to push and pop an item (e.g queue or stack)
 	 * contains methods to push(), pop() and dereference (const and non-const)
+	 * @param T the type of the content
+	 * @param Overriden the container type (usually the inheriting data type)
 	 */
 	template<class T, class Overriden> class PushPop {
 		/**

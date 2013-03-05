@@ -5,6 +5,7 @@ namespace DataStructures {
 
 	/**
 	 * @brief an interface of a data type whose elements can be accessed via index
+	 * @param T the type of the content
 	 */
 	template<class T> class Indexable {
 	public:
