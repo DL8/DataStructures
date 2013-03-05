@@ -20,20 +20,19 @@ namespace DataStructures {
 	};
 
 	/**
-	 * @brief a base class for queue exceptions
+	 * @brief thrown when trying to access an element in an empty data structure
 	 */
-	class QueueException: public DataStructureException {
-	protected:
-		explicit QueueException (const std::string &msg) : DataStructureException (msg) {}
-		explicit QueueException (const char *msg) : DataStructureException (msg) {}
+	class Empty: public DataStructureException {
+	public:
+		explicit Empty() : DataStructureException ("Empty set") {}
 	};
 
 	/**
-	 * @brief thrown when trying to access an empty queue in an invalid manner
+	 * @brief thrown when trying to access an invalid index
 	 */
-	class QueueIsEmpty: public QueueException {
+	class OutOfBounds: public DataStructureException {
 	public:
-		explicit QueueIsEmpty() : QueueException ("Queue is empty") {}
+		explicit OutOfBounds () : DataStructureException ("Out of Bounds") {}
 	};
 }
 
