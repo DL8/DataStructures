@@ -6,6 +6,7 @@
 #include "iterable.h"
 #include "base_iterator.h"
 #include "exceptions.h"
+#include "indexable.h"
 using std::abs;
 
 namespace DataStructures {
@@ -67,15 +68,15 @@ namespace DataStructures {
 			 * @brief creates a new iterator that points at the given position
 			 * @param pos position to point at
 			 */
-			Iterator (Node *pos) : current (pos) {
-				current = pos;
-			}
+			Iterator (Node *pos) : current (pos) {}
 
 			/**
 			 * @brief dereference
+			 * trying to access the end of list will throw OutOfBounds
+			 * trying to access invalid iterators will cause an undefined behavior
 			 * @return reference to the value at the current position
 			 */
-			virtual T &operator*() override {
+			T &operator*() override {
 				if (current->next == nullptr) {
 					throw OutOfBounds();
 				}
@@ -84,6 +85,7 @@ namespace DataStructures {
 
 			/**
 			 * @brief prefix increment
+			 * invalid increment will cause an undefined behavior
 			 * @return *this
 			 */
 			Iterator &operator++() override {
@@ -91,6 +93,10 @@ namespace DataStructures {
 				return *this;
 			}
 
+			/**
+			 * @brief suffix increment
+			 * @return *this
+			 */
 			Iterator &operator++ (int) override {
 				++ (*this);
 				return *this;
@@ -98,6 +104,7 @@ namespace DataStructures {
 
 			/**
 			 * @brief prefix decrement
+			 * invalid decrement will cause an undefined behavior
 			 * @return *this
 			 */
 			Iterator &operator--() override {
@@ -105,6 +112,10 @@ namespace DataStructures {
 				return *this;
 			}
 
+			/**
+			 * @brief suffix decrement
+			 * @return *this
+			 */
 			Iterator &operator-- (int) override {
 				-- (*this);
 				return *this;
@@ -112,6 +123,7 @@ namespace DataStructures {
 
 			/**
 			 * @brief adds offset to the iterator
+			 * invalid addition will cause an undefined behavior
 			 * @param offset
 			 * @return *this
 			 */
@@ -125,13 +137,19 @@ namespace DataStructures {
 				return *this;
 			}
 
+			/**
+			 * @brief comparison
+			 * @param other iterator to compare with
+			 * @return true if both iterators point at the same element
+			 */
 			bool operator== (const Iterator &other) const override {
 			    return this->current == other.current;
 			}
 
 			/**
 			 * @brief adds offset to an iterator
-			 * @param offset
+			 * invalid addition will cause an undefined behavior
+			 * @param offset the offset to add
 			 * @return the new iterator
 			 */
 			Iterator operator+ (const int offset) const override {
