@@ -14,7 +14,7 @@ namespace DataStructures {
 		 * @brief actually adds an element into the data type (called from push())
 		 * @param data the content to push
 		 */
-		virtual void pushElement (const T &data) {
+		virtual void pushElement (const T &data) override {
 			content.append (data);
 		}
 	public:
@@ -45,7 +45,7 @@ namespace DataStructures {
 		 */
 		virtual T pop() override {
 			if (empty()) {
-				throw QueueIsEmpty();
+				throw Empty();
 			}
 			T ret = * (*this);
 			content.erase (content.begin());
@@ -91,6 +91,3 @@ namespace DataStructures {
 }
 
 #endif
-
-
-
