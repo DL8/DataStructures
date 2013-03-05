@@ -2,14 +2,17 @@
 #define _BASE_ITERATOR_H_
 
 #include <typeinfo>
+#include "comparable.h"
 
 namespace DataStructures {
 
 	/**
 	 * @brief a base class of an iterator
+	 * @param T type of the contents
+	 * @param Overriden type of the data type (usually the type containing the iterator)
 	 * in order to be valid, the iterator also has to implement increment, decrement, +=, -=, + and -
 	 */
-	template<class T, class Overriden> class BaseIterator {
+	template<class T, class Overriden> class BaseIterator: public Comparable<Overriden> {
 	protected:
 	public:
 		BaseIterator() = default;

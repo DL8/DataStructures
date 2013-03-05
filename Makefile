@@ -10,11 +10,11 @@ queue_test: queue_test.o
 list_test: list_test.o
 	$(CC) $(CXXFLAGS) $^ -o $@
 
-queue_test.o: queue_test.cpp queue.h pushpop.h list.h iterable.h base_iterator.h exceptions.h test_utils.h
+list_test.o: list_test.cpp list.h iterable.h base_iterator.h comparable.h exceptions.h indexable.h test_utils.h
 	$(CC) $(CXXFLAGS) -c $^
-list_test.o: list_test.cpp list.h iterable.h base_iterator.h exceptions.h test_utils.h
+queue_test.o: queue_test.cpp queue.h pushpop.h list.h iterable.h base_iterator.h comparable.h exceptions.h indexable.h test_utils.h
 	$(CC) $(CXXFLAGS) -c $^
-vector_test.o: vector_test.cpp vector.h list.h iterable.h base_iterator.h exceptions.h indexable.h test_utils.h
+vector_test.o: vector_test.cpp vector.h list.h iterable.h base_iterator.h comparable.h exceptions.h indexable.h test_utils.h
 	$(CC) $(CXXFLAGS) -c $^
 
 clean: clean_o clean_gch
