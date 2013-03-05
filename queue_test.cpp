@@ -15,7 +15,7 @@ int main() {
 
 	TEST_TITLE ("push");
 	q1.push (1);
-	q1.push (2);
+	q1 = q1.push (2);
 
 	TEST_TITLE ("empty & size");
 	cout << q1.empty() << " " << q1.size() << endl;
