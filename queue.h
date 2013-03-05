@@ -7,7 +7,7 @@
 
 namespace DataStructures {
 
-	template<class T> class Queue: public PushPop<T, Queue<T>> {
+	template<class T> class Queue: public PushPop<T, Queue<T>>, public Comparable<Queue<T>> {
 		List<T> content;
 
 		/**
@@ -74,17 +74,8 @@ namespace DataStructures {
 		 * @param other the queue to compare with
 		 * @return true if both queues contain the same elements at the same order
 		 */
-		bool operator== (const Queue &other) const {
-			return this->content == other.content;
-		}
-
-		/**
-		 * @brief compares the current queue with another
-		 * @param other the queue to compare with
-		 * @return false if both queues contain the same elements at the same order
-		 */
-		bool operator!= (const Queue &other) const {
-			return ! (*this == other);
+		bool operator== (const Queue &other) const override {
+		    return this->content == other.content;
 		}
 	};
 

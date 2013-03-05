@@ -4,6 +4,7 @@
 #include "list.h"
 #include "exceptions.h"
 #include "indexable.h"
+#include "comparable.h"
 #include "base_iterator.h"
 
 namespace DataStructures {
@@ -11,7 +12,7 @@ namespace DataStructures {
 	/**
 	 * @brief vector: a dynamic array
 	 */
-	template<class T> class Vector: Indexable<T> {
+	template<class T> class Vector: public Indexable<T>, public Comparable<Vector<T>> {
 	private:
 		typedef typename List<T>::Iterator ListIterator;
 	public:
@@ -160,12 +161,8 @@ namespace DataStructures {
 			return *this;
 		}
 
-		bool operator== (const Vector &other) const {
-			return this->content == other.content;
-		}
-
-		bool operator!= (const Vector &other) const {
-			return this->content != other.content;
+		bool operator== (const Vector &other) const override {
+		    return this->content == other.content;
 		}
 	};
 }
