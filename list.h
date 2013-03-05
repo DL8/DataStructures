@@ -7,11 +7,12 @@
 #include "base_iterator.h"
 #include "exceptions.h"
 #include "indexable.h"
+#include "comparable.h"
 using std::abs;
 
 namespace DataStructures {
 
-	template<class T> class List {
+	template<class T> class List: public Comparable<List<T>> {
 		// subtypes definitions
 		struct Node {
 			T value;
@@ -341,7 +342,7 @@ namespace DataStructures {
 		 * @param other the list to compare with
 		 * @return true if both lists contain the same elements at the same order
 		 */
-		bool operator== (const List &other) const {
+		bool operator== (const List &other) const override {
 			Iterator i1 = begin();
 			Iterator i2 = other.begin();
 			while ( (i1 != end()) && (i2 != end())) {
@@ -356,18 +357,12 @@ namespace DataStructures {
 			}
 			return true;
 		}
-
-		/**
-		 * @brief compares with another list
-		 * T must support != comparison for this
-		 * @param other the list to compare with
-		 * @return false if both lists contain the same elements at the same order
-		 */
-		bool operator!= (const List &other) const {
-			return ! (*this == other);
-		}
 	};
 
 }
 
 #endif
+
+
+
+

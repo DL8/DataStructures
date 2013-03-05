@@ -79,8 +79,8 @@ for (auto & j: n) {
 	}
 	cout << endl;
 
-	TEST_TITLE ("static assertion");
-	List<TypeTest> n3;
+	//TEST_TITLE ("static assertion");
+	//List<TypeTest> n3;
 
 	TEST_TITLE ("empty list assignment");
 	n = List<int>();
