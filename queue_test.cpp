@@ -58,10 +58,10 @@ int main() {
 	}
 	cout << endl;
 
-	TEST_TITLE ("QueueIsEmpty exception");
+	TEST_TITLE ("Empty exception");
 	try {
 		q3.pop();
-	} catch (QueueIsEmpty &e) {
+	} catch (Empty &e) {
 		cout << "caught: " << e.what() << endl;
 	}
 
