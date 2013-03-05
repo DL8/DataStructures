@@ -1,13 +1,22 @@
 #ifndef _QUEUE_H_
 #define _QUEUE_H_
 
+#include "pushpop.h"
 #include "list.h"
 #include "exceptions.h"
 
 namespace DataStructures {
 
-	template<class T> class Queue {
+	template<class T> class Queue: public PushPop<T> {
 		List<T> content;
+
+		/**
+		 * @brief actually adds an element into the data type (called from push())
+		 * @param data the content to push
+		 */
+		virtual void pushElement (const T &data) {
+			content.append (data);
+		}
 	public:
 		/**
 		 * @brief creates an empty queue
@@ -31,20 +40,10 @@ namespace DataStructures {
 		}
 
 		/**
-		 * @brief inserts an element to the queue
-		 * @param data the element to enqueue
-		 * @return *this
-		 */
-		Queue &enqueue (const T &data) {
-			content.append (data);
-			return *this;
-		}
-
-		/**
 		 * @brief gets the head of the queue
 		 * @return the head of the queue
 		 */
-		T dequeue() {
+		virtual T pop() override {
 			if (empty()) {
 				throw QueueIsEmpty();
 			}
@@ -66,15 +65,7 @@ namespace DataStructures {
 		 * @brief reference to the head of the queue
 		 * @return a reference to the head of the queue
 		 */
-		T &operator*() {
-			return *content.begin();
-		}
-
-		/**
-		 * @brief const reference to the head of the queue
-		 * @return a const reference to the head of the queue
-		 */
-		const T &operator*() const {
+		virtual T &operator*() override {
 			return *content.begin();
 		}
 
@@ -100,3 +91,6 @@ namespace DataStructures {
 }
 
 #endif
+
+
+

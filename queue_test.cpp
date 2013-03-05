@@ -13,9 +13,9 @@ int main() {
 	TEST_TITLE ("empty & size");
 	cout << q1.empty() << " " << q1.size() << endl;
 
-	TEST_TITLE ("enqueue");
-	q1.enqueue (1);
-	q1.enqueue (2);
+	TEST_TITLE ("push");
+	q1.push (1);
+	q1.push (2);
 
 	TEST_TITLE ("empty & size");
 	cout << q1.empty() << " " << q1.size() << endl;
@@ -33,8 +33,8 @@ int main() {
 	TEST_TITLE ("copy c-tor");
 	auto q3 (q2);
 	cout << (q2 == q3) << endl;
-	q3.enqueue (4);
-	q2.enqueue (4);
+	q3.push (4);
+	q2.push (4);
 	cout << (q2 == q3) << endl;
 
 	TEST_TITLE ("clear");
@@ -42,25 +42,25 @@ int main() {
 	q3.clear();
 	cout << q3.empty() << endl;
 
-	TEST_TITLE ("dequeue");
+	TEST_TITLE ("pop");
 	*q2 = 5;
-	int tmp = q2.dequeue();
+	int tmp = q2.pop();
 	cout << tmp << endl;
-	q2.enqueue (tmp);
+	q2.push (tmp);
 	while (!q2.empty()) {
-		q3.enqueue (*q2);
-		cout << q2.dequeue() << " ";
+		q3.push (*q2);
+		cout << q2.pop() << " ";
 	}
 	cout << endl;
 	cout << q2.empty() << endl;
 	while (!q3.empty()) {
-		cout << q3.dequeue() << " ";
+		cout << q3.pop() << " ";
 	}
 	cout << endl;
 
 	TEST_TITLE ("QueueIsEmpty exception");
 	try {
-		q3.dequeue();
+		q3.pop();
 	} catch (QueueIsEmpty &e) {
 		cout << "caught: " << e.what() << endl;
 	}
