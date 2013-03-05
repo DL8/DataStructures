@@ -3,6 +3,9 @@
 
 #include <cstdlib>
 #include <type_traits>
+#include "iterable.h"
+#include "base_iterator.h"
+#include "exceptions.h"
 using std::abs;
 
 namespace DataStructures {
@@ -57,7 +60,7 @@ namespace DataStructures {
 			head = nullptr;
 		}
 	public:
-		class Iterator {
+		class Iterator: public BaseIterator<T, Iterator> {
 			Node *current;
 		public:
 			/**
@@ -72,68 +75,39 @@ namespace DataStructures {
 			 * @brief dereference
 			 * @return reference to the value at the current position
 			 */
-			T &operator*() {
+			virtual T &operator*() override {
+				if (current->next == nullptr) {
+					throw OutOfBounds();
+				}
 				return current->value;
-			}
-
-			/**
-			 * @brief dereference
-			 * @return const reference to the value at the current position
-			 */
-			const T &operator*() const {
-				return * (*this);
 			}
 
 			/**
 			 * @brief prefix increment
 			 * @return *this
 			 */
-			Iterator &operator++() {
+			Iterator &operator++() override {
 				current = current->next;
 				return *this;
 			}
 
-			/**
-			 * @brief suffix increment
-			 * @return *this
-			 */
-			Iterator &operator++ (int) {
-				return ++ (*this);
+			Iterator &operator++ (int) override {
+				++ (*this);
+				return *this;
 			}
 
 			/**
 			 * @brief prefix decrement
 			 * @return *this
 			 */
-			Iterator &operator--() {
+			Iterator &operator--() override {
 				current = current->prev;
 				return *this;
 			}
 
-			/**
-			 * @brief suffix decrement
-			 * @return *this
-			 */
-			Iterator &operator-- (int) {
-				return -- (*this);
-			}
-
-			/**
-			 * @brief compares two iterators
-			 * @param other iterator to compare with
-			 * @return true if iterators point at the same element
-			 */
-			bool operator== (const Iterator &other) const {
-				return this->current == other.current;
-			}
-
-			/**
-			 * @brief compares two iterators
-			 * @param other iterator to compare with
-			 * @return false if iterators point at the same element
-			 */
-			bool operator!= (const Iterator &other) const {
-				return ! (*this == other);
+			Iterator &operator-- (int) override {
+				-- (*this);
+				return *this;
 			}
 
 			/**
@@ -141,7 +115,7 @@ namespace DataStructures {
 			 * @param offset
 			 * @return *this
 			 */
-			Iterator &operator+= (int offset) {
+			Iterator &operator+= (int offset) override {
 				bool add = (offset >= 0);
 				offset = abs (offset);
 				while (offset > 0) {
@@ -151,14 +125,8 @@ namespace DataStructures {
 				return *this;
 			}
 
-			/**
-			 * @brief substracts offset from the iterator
-			 * @param offset
-			 * @return *this
-			 */
-			Iterator &operator-= (const int offset) {
-				*this += (-offset);
-				return *this;
+			bool operator== (const Iterator &other) const override {
+			    return this->current == other.current;
 			}
 
 			/**
@@ -166,19 +134,10 @@ namespace DataStructures {
 			 * @param offset
 			 * @return the new iterator
 			 */
-			Iterator operator+ (const int offset) const {
-				Iterator ret = *this;
-				ret += offset;
-				return ret;
-			}
-
-			/**
-			 * @brief substracts offset from an iterator
-			 * @param offset
-			 * @return the new iterator
-			 */
-			Iterator operator- (const int offset) const {
-				return *this + (-offset);
+			Iterator operator+ (const int offset) const override {
+			    Iterator ret = *this;
+			    ret += offset;
+			    return ret;
 			}
 
 			friend class List;
@@ -365,8 +324,8 @@ namespace DataStructures {
 		 * @return true if both lists contain the same elements at the same order
 		 */
 		bool operator== (const List &other) const {
-			auto i1 = begin();
-			auto i2 = other.begin();
+			Iterator i1 = begin();
+			Iterator i2 = other.begin();
 			while ( (i1 != end()) && (i2 != end())) {
 				if (*i1 != *i2) {
 					return false;
