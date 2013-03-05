@@ -7,7 +7,7 @@
 
 namespace DataStructures {
 
-	template<class T> class Queue: public PushPop<T> {
+	template<class T> class Queue: public PushPop<T, Queue<T>> {
 		List<T> content;
 
 		/**
