@@ -1,6 +1,8 @@
 #ifndef _PUSHPOP_H_
 #define _PUSHPOP_H_
 
+#include <type_traits>
+
 namespace DataStructures {
 
 	/**
@@ -14,7 +16,10 @@ namespace DataStructures {
 		 */
 		virtual void pushElement (const T &data) = 0;
 	public:
-		PushPop() {}
+		PushPop() {
+			static_assert (std::is_copy_constructible<T>::value, "T must have an accessible copy c-tor");
+			
+		}
 		virtual ~PushPop() {}
 
 		/**
