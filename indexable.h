@@ -29,7 +29,7 @@ namespace DataStructures {
 		 * @return a const reference to the element at index
 		 */
 		virtual const T &operator[] (const int index) const {
-			return *this[index];
+			return (*this)[index];
 		}
 	};
 
