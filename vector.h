@@ -6,13 +6,14 @@
 #include "indexable.h"
 #include "comparable.h"
 #include "base_iterator.h"
+#include "container.h"
 
 namespace DataStructures {
 
 	/**
 	 * @brief vector: a dynamic array
 	 */
-	template<class T> class Vector: public Indexable<T>, public Comparable<Vector<T>> {
+	template<class T> class Vector: public Container<Vector<T>>, public Indexable<T>, public Comparable<Vector<T>> {
 	private:
 		typedef typename List<T>::Iterator ListIterator;
 	public:
@@ -133,15 +134,11 @@ namespace DataStructures {
 			return Iterator (content.end());
 		}
 
-		bool empty() const {
-			return content.empty();
-		}
-
-		int size() const {
+		int size() const override {
 			return content.size();
 		}
 
-		Vector &clear() {
+		Vector &clear() override {
 			content.clear();
 			return *this;
 		}

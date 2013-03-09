@@ -8,11 +8,12 @@
 #include "exceptions.h"
 #include "indexable.h"
 #include "comparable.h"
+#include "container.h"
 using std::abs;
 
 namespace DataStructures {
 
-	template<class T> class List: public Comparable<List<T>> {
+	template<class T> class List: public Container<List<T>>, public Comparable<List<T>> {
 		// subtypes definitions
 		struct Node {
 			T value;
@@ -288,7 +289,7 @@ namespace DataStructures {
 		 * @brief returns the size of the list
 		 * @return the size of the list
 		 */
-		int size() const {
+		int size() const override {
 			int ret = 0;
 			auto i = begin();
 			while (i != end()) {
@@ -302,7 +303,7 @@ namespace DataStructures {
 		 * @brief checks if the list is empty
 		 * @return true if the list is empty
 		 */
-		bool empty() const {
+		bool empty() const override {
 			return begin() == end();
 		}
 
@@ -310,7 +311,7 @@ namespace DataStructures {
 		 * @brief clears the entire list content
 		 * @return *this
 		 */
-		List &clear() {
+		List &clear() override {
 			while ( (head != nullptr) && (head != tail)) {
 				Node *tmp = head;
 				head = head->next;

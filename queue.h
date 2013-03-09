@@ -4,10 +4,11 @@
 #include "pushpop.h"
 #include "list.h"
 #include "exceptions.h"
+#include "container.h"
 
 namespace DataStructures {
 
-	template<class T> class Queue: public PushPop<T, Queue<T>>, public Comparable<Queue<T>> {
+	template<class T> class Queue: public Container<Queue<T>>, public PushPop<T, Queue<T>>, public Comparable<Queue<T>> {
 		List<T> content;
 
 		/**
@@ -24,19 +25,19 @@ namespace DataStructures {
 		Queue() : content (List<T>()) {}
 
 		/**
-		 * @brief checks if the queue is empty
-		 * @return true if the queue is empty
-		 */
-		bool empty() const {
-			return content.empty();
-		}
-
-		/**
 		 * @brief returns the size of the queue
 		 * @return the size of the queue
 		 */
-		int size() const {
+		int size() const override {
 			return content.size();
+		}
+		
+		/**
+		 * @brief checks if the container is empty
+		 * @return true if the container is empty
+		 */
+		bool empty() const override {
+			return (size() == 0);
 		}
 
 		/**
@@ -56,7 +57,7 @@ namespace DataStructures {
 		 * @brief clears the content of the queue
 		 * @return *this
 		 */
-		Queue &clear() {
+		Queue &clear() override {
 			content.clear();
 			return *this;
 		}
