@@ -84,6 +84,13 @@ namespace DataStructures {
 				}
 				return current->value;
 			}
+			
+			const T &operator*() const override {
+				if (current->next == nullptr) {
+					throw OutOfBounds();
+				}
+				return current->value;
+			}
 
 			/**
 			 * @brief prefix increment
@@ -145,7 +152,7 @@ namespace DataStructures {
 			 * @return true if both iterators point at the same element
 			 */
 			bool operator== (const Iterator &other) const override {
-			    return this->current == other.current;
+				return this->current == other.current;
 			}
 
 			/**
@@ -155,9 +162,9 @@ namespace DataStructures {
 			 * @return the new iterator
 			 */
 			Iterator operator+ (const int offset) const override {
-			    Iterator ret = *this;
-			    ret += offset;
-			    return ret;
+				Iterator ret = *this;
+				ret += offset;
+				return ret;
 			}
 
 			friend class List;
@@ -293,10 +300,10 @@ namespace DataStructures {
 			int ret = 0;
 			auto i = begin();
 			while (i != end()) {
-				ret++;
-				i++;
-			}
-			return ret;
+			ret++;
+			i++;
+		}
+		return ret;
 		}
 
 		/**
