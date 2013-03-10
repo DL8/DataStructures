@@ -34,6 +34,14 @@ namespace DataStructures {
 	public:
 		explicit OutOfBounds () : DataStructureException ("Out of Bounds") {}
 	};
+
+	/**
+	 * @brief thrown when trying to remove a non-existent element from a set
+	 */
+	class ElementDoesNotExist: public DataStructureException {
+	public:
+		explicit ElementDoesNotExist() : DataStructureException ("Element Does Not Exist") {}
+	};
 }
 
 #endif
