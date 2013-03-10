@@ -65,6 +65,23 @@ for (auto & i: s2) {
 	}
 	cout << endl;
 
+	TEST_TITLE ("union");
+	s3.insert (7);
+	auto un = s1.unite (s3);
+for (auto & i: un) {
+		cout << i << " ";
+	}
+	cout << endl;
+	cout << (s1 <= un) << " " << (s3 <= un) << endl;
+
+	TEST_TITLE ("intersection");
+	auto in = s3.intersect (s1);
+for (auto & i: in) {
+		cout << i << " ";
+	}
+	cout << endl;
+	cout << (in <= s1) << " " << (s3 >= in) << endl;
+
 	TEST_TITLE ("clear");
 	cout << s3.empty() << endl;
 	s3.clear();
