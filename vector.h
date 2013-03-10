@@ -111,10 +111,6 @@ namespace DataStructures {
 	private:
 		List<T> content;
 	public:
-		Vector() {}
-
-		Vector (const Vector &src) : content (src.content) {}
-
 		T &at (const int index) override {
 			if ( (index < 0) || (index >= content.size())) {
 				throw OutOfBounds();

@@ -20,11 +20,6 @@ namespace DataStructures {
 		}
 	public:
 		/**
-		 * @brief creates an empty queue
-		 */
-		Queue() : content (List<T>()) {}
-
-		/**
 		 * @brief returns the size of the queue
 		 * @return the size of the queue
 		 */
