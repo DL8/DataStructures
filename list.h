@@ -3,6 +3,7 @@
 
 #include <cstdlib>
 #include <type_traits>
+#include <functional>
 #include "iterable.h"
 #include "base_iterator.h"
 #include "exceptions.h"
@@ -13,7 +14,8 @@ using std::abs;
 
 namespace DataStructures {
 
-	template<class T> class List: public Container<List<T>>, public Comparable<List<T>> {
+	template<class T, class Eq = std::equal_to<T>> class List: public 
+Container<List<T, Eq>>, public Comparable<List<T, Eq>> {
 		// subtypes definitions
 		struct Node {
 			T value;
@@ -300,10 +302,10 @@ namespace DataStructures {
 			int ret = 0;
 			auto i = begin();
 			while (i != end()) {
-			ret++;
-			i++;
-		}
-		return ret;
+				ret++;
+				i++;
+			}
+			return ret;
 		}
 
 		/**
@@ -331,6 +333,22 @@ namespace DataStructures {
 		}
 
 		/**
+		 * @brief finds the given element
+		 * @param data the element to look for
+		 * @return an iterator to the first appearance of the element, or to the end of the list if not found
+		 */
+		Iterator find(const T &data) const {
+			Iterator ret = begin();
+			while(ret != end()) {
+				if(data == *ret) {
+					return ret;
+				}
+				ret++;
+			}
+			return ret;
+		}
+
+		/**
 		 * @brief assignment operator
 		 * @param other list to assign from
 		 * @return *this
@@ -351,10 +369,11 @@ namespace DataStructures {
 		 * @return true if both lists contain the same elements at the same order
 		 */
 		bool operator== (const List &other) const override {
+			Eq eq;
 			Iterator i1 = begin();
 			Iterator i2 = other.begin();
 			while ( (i1 != end()) && (i2 != end())) {
-				if (*i1 != *i2) {
+				if (!eq(*i1, *i2)) {
 					return false;
 				}
 				i1++;

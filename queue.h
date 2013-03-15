@@ -1,6 +1,7 @@
 #ifndef _QUEUE_H_
 #define _QUEUE_H_
 
+#include <functional>
 #include "pushpop.h"
 #include "list.h"
 #include "exceptions.h"
@@ -8,8 +9,10 @@
 
 namespace DataStructures {
 
-	template<class T> class Queue: public Container<Queue<T>>, public PushPop<T, Queue<T>>, public Comparable<Queue<T>> {
-		List<T> content;
+	template<class T, class Eq = std::equal_to<T> > class Queue: public 
+Container<Queue<T, Eq>>, public PushPop<T, Queue<T, Eq>>, public 
+Comparable<Queue<T, Eq>> {
+		List<T, Eq> content;
 
 		/**
 		 * @brief actually adds an element into the data type (called from push())

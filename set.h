@@ -1,6 +1,7 @@
 #ifndef _SET_H_
 #define _SET_H_
 
+#include <functional>
 #include "comparable.h"
 #include "container.h"
 #include "list.h"
@@ -14,9 +15,10 @@ namespace DataStructures {
 	 * elements in the set must support comparison, assignment and copy
 	 * @param T the type of the elements
 	 */
-	template<class T> class Set: public Container<Set<T>>, public Comparable<Set<T>> {
+	template<class T, class Eq = std::equal_to<T> > class Set: public 
+Container<Set<T, Eq>>, public Comparable<Set<T, Eq>> {
 	private:
-		typedef typename List<T>::Iterator ListIterator;
+		typedef typename List<T, Eq>::Iterator ListIterator;
 	public:
 		class Iterator: public ConstIterator<T, Iterator> {
 			ListIterator current;
@@ -110,14 +112,14 @@ namespace DataStructures {
 			friend class Set;
 		};
 	private:
-		List<T> content;
+		List<T, Eq> content;
 
 		/**
 		 * @brief gets an iterator to the given element
 		 * @param data element to look for
 		 * @return an iterator to the given element, or to the end of the list if doesn't exist
 		 */
-		typename List<T>::Iterator getPosition (const T &data) const {
+		typename List<T, Eq>::Iterator getPosition (const T &data) const {
 			auto pos = content.begin();
 			while (pos != content.end()) {
 				if (*pos == data) {

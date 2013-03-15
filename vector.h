@@ -1,6 +1,7 @@
 #ifndef _VECTOR_H_
 #define _VECTOR_H_
 
+#include <functional>
 #include "list.h"
 #include "exceptions.h"
 #include "indexable.h"
@@ -13,9 +14,11 @@ namespace DataStructures {
 	/**
 	 * @brief vector: a dynamic array
 	 */
-	template<class T> class Vector: public Container<Vector<T>>, public Indexable<T>, public Comparable<Vector<T>> {
+	template<class T, class Eq = std::equal_to<T>> class Vector: public 
+Container<Vector<T, Eq>>, public Indexable<T>, public Comparable<Vector<T, Eq>> 
+{
 	private:
-		typedef typename List<T>::Iterator ListIterator;
+		typedef typename List<T, Eq>::Iterator ListIterator;
 	public:
 		class Iterator: public BaseIterator<T, Iterator> {
 			ListIterator current;
@@ -109,7 +112,7 @@ namespace DataStructures {
 			friend class Vector;
 		};
 	private:
-		List<T> content;
+		List<T, Eq> content;
 	public:
 		T &at (const int index) override {
 			if ( (index < 0) || (index >= content.size())) {
